@@ -13,7 +13,14 @@ namespace ToDoProjeto.Data
             : base(options)
         {
         }
-        
+
         public DbSet<Tarefa> Tarefas {get;set;}
-    }
+        public DbSet<ListaDeTarefa> ListaDeTarefas{get;set;}
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+	        modelBuilder.Entity<ListaDeTarefa>().HasData(new ListaDeTarefa{Id = 1, Nome = "Meu Dia"});
+	        base.OnModelCreating(modelBuilder);
+        }
+    }    
 }
