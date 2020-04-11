@@ -1,15 +1,29 @@
-﻿<!DOCTYPE html>
-<html lang="en">
+﻿@{
+    var ListasDeTarefa = ViewData["ListasDeTarefa"] as List<ListaDeTarefa>;
+}
+
+<!DOCTYPE html>
+<html>
 <head>
+    <script src="https://kit.fontawesome.com/6d598fd4c6.js" crossorigin="anonymous"></script>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />    
     <title>@ViewData["Title"] - ToDo</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />  
+    <link rel="stylesheet" href="~/css/home.css" />
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-0">
+          <!-- @if(User.Identity.IsAuthenticated)
+            {
+                <button type="button" id="sidebarCollapse" class="btn btn-info">
+                <i class="fas fa-align-left"></i>
+                <span></span>
+                </button>
+            } -->
             <div class="container">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">ToDo</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
@@ -30,20 +44,182 @@
             </div>
         </nav>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
+    @if (User.Identity.IsAuthenticated)
+        {
+            <div class = "container">
+                <div class="wrapper">             
+                    <nav id="sidebar">                                                                										
 
-    <footer class="border-top footer text-muted">
+                        <div class="sidebar-header">                        
+                            <button type="button" id="sidebarCollapse" class="btn btn-secondary">
+                                <i class="fas fa-bars"></i>                            
+                            </button>   
+                        </div>
+
+                        <ul class="list-unstyled components">                       
+                            <li class="active">
+                                <a asp-controller="Tarefas" asp-action="Edit" asp-route-Id="1">
+                                    <i class="fas fa-sun"></i>
+                                        Meu Dia
+                                </a>                                
+                            </li>
+                            <li>
+                                <a asp-controller="Tarefas" asp-action="Edit" asp-route-Id="2">
+                                    <i class="far fa-star"></i>
+                                        Importante
+                                </a>                            
+                            </li>
+                            <li>
+                                <a asp-controller="Tarefas" asp-action="Edit" asp-route-Id="3">
+                                    <i class="fas fa-home"></i>
+                                        Tarefas
+                                </a>                                
+                            </li>
+                            <li>
+                                <a asp-controller="Tarefas" asp-action="Edit" asp-route-Id="4">
+                                    <i class="far fa-calendar-alt"></i>
+                                    Planejado
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">  
+                                    <i class="fas fa-plus"></i>                              
+                                    Nova Lista
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>                 
+                                                         
+                    <main role="main" class="pb-3" id="content">
+				        @RenderBody()
+			        </main>
+                </div> 
+            </div>
+        }
+    else
+    {
+        <div class="container">
+            <main role="main" class="pb-3">
+                @RenderBody()
+            </main>        
+        </div>
+    }    
+    
+   <!-- <footer class="border-top footer text-muted">
         <div class="container">
             &copy; 2020 - ToDoProjeto - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
-    </footer>
+    </footer> -->
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    @RenderSection("Scripts", required: false)
+    <script src="~/js/site.js" asp-append-version="true"></script>    
+
+<style>
+        .wrapper {
+			display: flex;
+            width: 100%;
+			align-items: stretch;                                            
+		}
+
+		a[data-toggle="collapse"] {
+			position: relative;
+		}		
+
+		a, a:hover, a:focus {
+			color: inherit;
+			text-decoration: none;
+			transition: all 0.3s;
+		}
+		
+		#sidebar {            
+			margin-left: -119px;
+			min-width: 250px;
+			max-width: 250px;
+			width: 250px;		
+			top: 1;
+			left: 0;
+			height: 100vh;
+			z-index: 9999;
+			background: #f8f9fa;
+			color: #212529;
+			transition: all 0.3s;            
+		}
+
+			#sidebar.active {
+				/*margin-left: -250px;   */
+                min-width: 80px;
+                max-width: 80px;
+                text-align: center;            
+			}
+
+			#sidebar .sidebar-header {                
+				padding: 10px;
+				background: #edeff0;
+			}
+
+			#sidebar ul.components {
+				padding: 20px 0;
+				/*border-bottom: 1px solid #edeff0;*/
+			}
+
+			#sidebar ul p {
+				color: #212529;
+				padding: 10px;
+			}
+
+			#sidebar ul li a {
+				padding: 10px;
+				font-size: 1.1em;
+				display: block;
+			}
+
+				#sidebar ul li a:hover {
+					color: #212529;
+					background: #e8e8e8;
+				}
+
+			#sidebar ul li.active > a, a[aria-expanded="true"] {
+				color: #212529;
+				background: #e8e8e8;
+			}
+            
+            #sidebar.active ul ul a {
+                padding: 10px !important;
+            }    
+             #sidebar.active ul li a {
+                padding: 20px 10px;
+                font-size: 0.85em;
+            }
+
+            #sidebar.active ul li a i {
+                margin-right:  0;
+                display: block;
+                font-size: 1.8em;
+                margin-bottom: 5px;
+            }                              
+
+		@@media (max-width: 768px) {
+			#sidebar {
+				margin-left: -250px;
+			}
+
+				#sidebar.active {
+					margin-left: 0;
+				}
+		}
+</style>
+<script>
+  $(document).ready(function () {
+
+    $('#sidebarCollapse').on('click', function () {
+        $('#sidebar').toggleClass('active');
+    });
+
+});
+</script>
+
+@RenderSection("Scripts", required: false)
 </body>
 </html>
+
+

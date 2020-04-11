@@ -32,7 +32,7 @@ namespace ToDoProjeto
 
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
-            services.AddControllersWithViews();
+            services.AddControllersWithViews();           
             services.AddRazorPages();
         }
 
@@ -57,12 +57,12 @@ namespace ToDoProjeto
 
             app.UseAuthentication();
             app.UseAuthorization();
-
+             
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Tarefas}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
             });
         }
