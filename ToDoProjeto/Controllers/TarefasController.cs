@@ -27,6 +27,7 @@ namespace ToDoProjeto.Controllers
 
         public async Task<IActionResult> Edit(int Id)
         {
+            ViewData["ListaTitulo"] = _context.ListaDeTarefas.Where(x => x.Id == Id).FirstOrDefault();
             var tarefas = await _context.Tarefas.Where(x => x.ListaDeTarefaId == Id).ToListAsync();
             var tarefasViewModel = new List<TarefaViewModel>();
             foreach(var tarefa in tarefas)

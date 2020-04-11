@@ -3,22 +3,25 @@
 @{
 	ViewData["Title"] = "Tarefas";
 	Layout = "~/Views/Shared/_Layout.cshtml";
+	var ListaTitulo = ViewData["ListaTitulo"] as ListaDeTarefa;
 }
 <head>
-	<meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta charset="utf-8" />    
     <title>@ViewData["Title"] - Tarefas</title>
 </head>
 <body>
-	<div asp-controller="Tarefas" asp-action="Edit">
-		<div class="row">
-			<div>
-				@foreach (var item in Model)
-				{
-					@Html.DisplayFor(modelItem => item.Descricao)				
-				}
+	<div class="container">
+		<h1>@ListaTitulo.Nome</h1>
+		<div asp-controller="Tarefas" asp-action="Edit">
+			<div class="row">
+				<div>
+					@foreach (var item in Model)
+					{
+						@Html.DisplayFor(modelItem => item.Descricao)				
+					}
+				</div>
+				<hr>			
 			</div>
-			<hr>			
 		</div>
 	</div>
 </body>
