@@ -35,6 +35,9 @@ html {
   }
 }
 
+#content {
+  margin-left: 20px;  
+}
 .border-top {
   border-top: 1px solid #e5e5e5;
 }
