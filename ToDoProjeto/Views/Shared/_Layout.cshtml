@@ -249,7 +249,7 @@
             let nomeLista = $(this).val();
                 $.ajax({
                     method: "POST",
-                    url:'@Url.Action("Create", "ListasDeTArefas")',
+                    url:'@Url.Action("Create", "ListasDeTarefas")',
                     data: {Nome: nomeLista}
                 }).done(function (resposta) {
                         CriaLista(resposta);
@@ -261,7 +261,9 @@
                 }  
                 $(".novaLista").val("");  
         }
-    });       
+    });    
+
+       
 
 });
 </script>

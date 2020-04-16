@@ -42,5 +42,21 @@ namespace ToDoProjeto.Controllers
             return View(tarefasViewModel);            
         } 
 
+        [HttpPost]
+        public async Task<IActionResult> Create(TarefaViewModel tarefaViewModel)
+        {
+            var tarefa = new Tarefa()
+            {
+                Id = tarefaViewModel.Id,
+                Descricao = tarefaViewModel.Descricao,
+                Status = tarefaViewModel.Status,
+                ListaDeTarefaId = tarefaViewModel.ListaDeTarefaId
+            };
+
+            _context.Tarefas.Add(tarefa);
+            await _context.SaveChangesAsync();
+            return Json(tarefa);
+        }
+
     }
 }
