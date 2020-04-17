@@ -102,6 +102,13 @@
                     <main role="main" class="pb-3 col" id="content">
 				        @RenderBody()
 			        </main>
+                    
+                    <div class="dropdown-menu dropdown-menu-sm" id="context-menu">
+                        <a class="dropdown-item" href="#">Action 1</a>
+                        <a class="dropdown-item" href="#">Action 2</a>
+                        <a class="excluir" href="#">Excluir Tarefa</a>
+                     </div>
+
                 </div> 
             </div>
         }
@@ -223,7 +230,11 @@
                 display: block;
                 font-size: 1.5em;
                 margin-bottom: 3px;                
-            }                       
+            }   
+
+            #context-menu{
+	            z-index:9999;
+            }                    
                                             
 
 		@@media (max-width: 768px) {
@@ -257,13 +268,11 @@
                 function CriaLista(listaDeTarefa){
                     let id = listaDeTarefa.id;
                     let nome = listaDeTarefa.nome;
-                    $(".listaSecundaria").append('<li><a href="/Tarefas/Edit/'+ id +'"><i class="fas fa-list"></i>' + nome + '</a></li>');
+                    $(".listaSecundaria").append('<li><a href="/Tarefas/Edit/'+ id +'"><i class="pr-1 fas fa-list"></i>' + nome + '</a></li>');
                 }  
                 $(".novaLista").val("");  
         }
     });    
-
-       
 
 });
 </script>

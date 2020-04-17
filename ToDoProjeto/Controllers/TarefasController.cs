@@ -23,8 +23,8 @@ namespace ToDoProjeto.Controllers
         {    
             ViewData["ListasDeTarefa"] = _context.ListaDeTarefas.ToList();        
             return View();
-        }  
-
+        }          
+        
         public async Task<IActionResult> Edit(int id)
         {
             ViewData["ListaTitulo"] = _context.ListaDeTarefas.Where(x => x.Id == id).FirstOrDefault();

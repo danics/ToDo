@@ -23,11 +23,11 @@
 						<svg height="24" width="24" viewBox="0 0 24 24">
   							<circle class="circulo" cx="10" cy="10" r="8" stroke="gray" stroke-width="1" fill="white" data="@item.Id"></circle>
 						</svg>
-						<div class="tarefa ml-3" data="@item.Id">@item.Descricao</div>	
-					</div>
+						<div class="tarefa ml-3" id="tarefa" data="@item.Id">@item.Descricao</div>	
+					</div>					
 				}
 			</div>	
-		</div>	
+		</div>			
 
 <style>
 input{       
@@ -48,7 +48,8 @@ div.tarefaDinamico.decoration{
 @section scripts{
 	<script type="text/javascript">
 		$(document).ready(function () {
-			var listaHash = [];		
+			var listaHash = [];	
+			let id;	
 
 			$(".novaTarefa").keypress(function(e) {        
         		if(e.which == 13) {                
@@ -63,10 +64,11 @@ div.tarefaDinamico.decoration{
 					function CriaTarefa(tarefa){
 						let hash = new Date().getTime().toString();
 						listaHash.push(hash);
-						let descricao = tarefa.descricao;						
-						$(".itens").append('<div class="row pb-3 pt-3 border-bottom"><svg height="24" width="24" viewBox="0 0 24 24"><circle class="circuloDinamico" cx="10" cy="10" r="8" stroke="gray" stroke-width="1" fill="white" data-hash="#"></circle></svg><div class="tarefaDinamico ml-3" data-hash="#">' + descricao + '</div></div>');												
+						let descricao = tarefa.descricao;	
+						id = tarefa.id;					
+						$(".itens").append('<div class="row pb-3 pt-3 border-bottom"><svg height="24" width="24" viewBox="0 0 24 24"><circle class="circuloDinamico" cx="10" cy="10" r="8" stroke="gray" stroke-width="1" fill="white" data-hash="#"></circle></svg><div class="tarefaDinamico ml-3" id="tarefa" data-hash="#">' + descricao + '</div></div>');												
 						$(".circuloDinamico").attr("data-hash", hash);
-						$(".tarefaDinamico").attr("data-hash", hash);
+						$(".tarefaDinamico").attr("data-hash", hash);						
 						$(".novaTarefa").val("");
 					}					
 				}
@@ -82,7 +84,35 @@ div.tarefaDinamico.decoration{
 				let item = $(this).attr("data-hash");							
 				$(".circuloDinamico[data-hash=" + item + "]").toggleClass("preenchimento");				
 				$(".tarefaDinamico[data-hash=" + item + "]").toggleClass("decoration");
-			});
+			});	
+
+
+			$(document).on('contextmenu', "div[id=tarefa]", function(e) {
+        		var top = e.pageY - 10;
+        		var left = e.pageX - 90;
+				var atributo = $(this).attr("class");
+				var data = $(this).attr("data");
+
+				if(atributo === "tarefaDinamico ml-3")
+					$(".excluir").attr("href", "/Tarefas/Delete/" + id + "");
+				else if(atributo === "tarefa ml-3")
+					$(".excluir").attr("href", "/Tarefas/Delete/" + data + "");								
+        
+    			$("#context-menu").css({
+        			display: "block",
+        			top: top,
+        			left: left
+    			}).addClass("show");
+    				return false; 
+    		})
+
+    		$(".container").on("click", function() {
+    			$("#context-menu").removeClass("show").hide();
+    		});
+
+    		$("#context-menu a").on("click", function() {
+    			$(this).parent().removeClass("show").hide();
+    		});		
 
 		});
 	</script>
