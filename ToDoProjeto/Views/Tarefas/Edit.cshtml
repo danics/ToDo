@@ -15,27 +15,41 @@
 		<br>
 		<br>
 		<div asp-controller="Tarefas" asp-action="Edit">
-			<input class= "novaTarefa" href="#" placeholder=" + Adicionar uma tarefa" maxlength="255"><br>	
+			<input class="novaTarefa" href="#" placeholder=" + Adicionar uma tarefa" maxlength="255"><br>	
 			<div class="itens">																							
 				@foreach (var item in Model)
-				{
-					<div class="pb-3 pt-3 border-bottom">
-						<div>@item.Descricao</div>	
+				{					
+					<div class="row pb-3 pt-3 border-bottom">
+						<svg height="24" width="24" viewBox="0 0 24 24">
+  							<circle class="circulo" cx="10" cy="10" r="8" stroke="gray" stroke-width="1" fill="white" data="@item.Id"></circle>
+						</svg>
+						<div class="tarefa ml-3" data="@item.Id">@item.Descricao</div>	
 					</div>
 				}
 			</div>	
-		</div>																									
-	
+		</div>	
 
 <style>
 input{       
         border: 0px;
     	outline: 0px;       
 }
+circle.preenchimento{
+	fill: gray;
+}
+div.tarefa.decoration{
+	text-decoration: line-through;
+}
+div.tarefaDinamico.decoration{
+	text-decoration: line-through;
+}
 </style>
+
 @section scripts{
 	<script type="text/javascript">
 		$(document).ready(function () {
+			var listaHash = [];		
+
 			$(".novaTarefa").keypress(function(e) {        
         		if(e.which == 13) {                
             		let descricaoTarefa = $(this).val();
@@ -47,13 +61,29 @@ input{
                         CriaTarefa(resposta);
                     }); 
 					function CriaTarefa(tarefa){
-						let descricao = tarefa.descricao;
-						$(".itens").append('<div class="pb-3 pt-3 border-bottom">' + descricao + '</div>');
+						let hash = new Date().getTime().toString();
+						listaHash.push(hash);
+						let descricao = tarefa.descricao;						
+						$(".itens").append('<div class="row pb-3 pt-3 border-bottom"><svg height="24" width="24" viewBox="0 0 24 24"><circle class="circuloDinamico" cx="10" cy="10" r="8" stroke="gray" stroke-width="1" fill="white" data-hash="#"></circle></svg><div class="tarefaDinamico ml-3" data-hash="#">' + descricao + '</div></div>');												
+						$(".circuloDinamico").attr("data-hash", hash);
+						$(".tarefaDinamico").attr("data-hash", hash);
 						$(".novaTarefa").val("");
-					}
-					
+					}					
 				}
 			});
+
+			$(document).on('click', '.circulo', function () {	
+				let item = $(this).attr("data");			
+				$(".circulo[data=" + item + "]").toggleClass("preenchimento");				
+				$(".tarefa[data=" + item + "]").toggleClass("decoration");
+			});
+
+			$(document).on('click', '.circuloDinamico', function () {	
+				let item = $(this).attr("data-hash");							
+				$(".circuloDinamico[data-hash=" + item + "]").toggleClass("preenchimento");				
+				$(".tarefaDinamico[data-hash=" + item + "]").toggleClass("decoration");
+			});
+
 		});
 	</script>
 }
