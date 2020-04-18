@@ -50,6 +50,8 @@ div.tarefaDinamico.decoration{
 		$(document).ready(function () {
 			var listaHash = [];	
 			let id;	
+			let atributo;
+			let data;
 
 			$(".novaTarefa").keypress(function(e) {        
         		if(e.which == 13) {                
@@ -89,14 +91,14 @@ div.tarefaDinamico.decoration{
 
 			$(document).on('contextmenu', "div[id=tarefa]", function(e) {
         		var top = e.pageY - 10;
-        		var left = e.pageX - 90;
-				var atributo = $(this).attr("class");
-				var data = $(this).attr("data");
+        		var left = e.pageX - 10;
+				atributo = $(this).attr("class");
+				data = $(this).attr("data");
 
-				if(atributo === "tarefaDinamico ml-3")
+				/*if(atributo === "tarefaDinamico ml-3")
 					$(".excluir").attr("href", "/Tarefas/Delete/" + id + "");
 				else if(atributo === "tarefa ml-3")
-					$(".excluir").attr("href", "/Tarefas/Delete/" + data + "");								
+					$(".excluir").attr("href", "/Tarefas/Delete/" + data + "");*/								
         
     			$("#context-menu").css({
         			display: "block",
@@ -112,7 +114,33 @@ div.tarefaDinamico.decoration{
 
     		$("#context-menu a").on("click", function() {
     			$(this).parent().removeClass("show").hide();
-    		});		
+    		});	
+
+
+			$(document).on('click', '.excluir', function(){
+				if(atributo === "tarefaDinamico ml-3"){
+					$.ajax({
+                    		method: "POST",
+                    		url:'@Url.Action("Delete", "Tarefas")',
+                    		data: {Id: id },
+							success: function() {   
+								location.reload();  
+							}
+					});
+				}
+				else if(atributo === "tarefa ml-3")
+				{
+					$.ajax({
+                    		method: "POST",
+                    		url:'@Url.Action("Delete", "Tarefas")',
+                    		data: {Id: data },
+							success: function() {   
+								location.reload();  
+							}							
+					});
+				}
+				
+			});	
 
 		});
 	</script>

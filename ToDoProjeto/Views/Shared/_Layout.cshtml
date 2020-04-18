@@ -87,7 +87,7 @@
                             @for(var i = 4 ; i < ListasDeTarefa.Count() ; i ++)
                             {   
                                 <li>
-                                   <a asp-controller="Tarefas" asp-action="Edit" asp-route-id="@ListasDeTarefa[i].Id ">
+                                   <a id="lista" asp-controller="Tarefas" asp-action="Edit" asp-route-id="@ListasDeTarefa[i].Id ">
                                         <i class="fas fa-list"></i>
                                         @ListasDeTarefa[i].Nome
                                     </a>
@@ -107,6 +107,12 @@
                         <a class="dropdown-item" href="#">Action 1</a>
                         <a class="dropdown-item" href="#">Action 2</a>
                         <a class="excluir" href="#">Excluir Tarefa</a>
+                     </div>
+
+                     <div class="dropdown-menu dropdown-menu-sm" id="context-menu-lista">
+                        <a class="dropdown-item" href="#">Action 1</a>
+                        <a class="dropdown-item" href="#">Action 2</a>
+                        <a class="excluirLista" href="#">Excluir Lista</a>
                      </div>
 
                 </div> 
@@ -234,7 +240,11 @@
 
             #context-menu{
 	            z-index:9999;
-            }                    
+            }
+
+            #context-menu-lista{
+	            z-index:9999;
+            }                     
                                             
 
 		@@media (max-width: 768px) {
@@ -268,11 +278,59 @@
                 function CriaLista(listaDeTarefa){
                     let id = listaDeTarefa.id;
                     let nome = listaDeTarefa.nome;
-                    $(".listaSecundaria").append('<li><a href="/Tarefas/Edit/'+ id +'"><i class="pr-1 fas fa-list"></i>' + nome + '</a></li>');
+                    $(".listaSecundaria").append('<li><a id="lista" href="/Tarefas/Edit/'+ id +'"><i class="pr-1 fas fa-list"></i>' + nome + '</a></li>');
                 }  
                 $(".novaLista").val("");  
         }
-    });    
+    });   
+
+
+    /*$(document).on('contextmenu', "a[id=lista]", function(e) {
+        		var top = e.pageY - 10;
+        		var left = e.pageX - 10;
+				//atributoLista = $(this).attr("class");
+				//dataLista = $(this).attr("data");
+
+				/*if(atributo === "tarefaDinamico ml-3")
+					$(".excluir").attr("href", "/Tarefas/Delete/" + id + "");
+				else if(atributo === "tarefa ml-3")
+					$(".excluir").attr("href", "/Tarefas/Delete/" + data + "");								
+        
+    			$("#context-menu-lista").css({
+        			display: "block",
+        			top: top,
+        			left: left
+    			}).addClass("show");
+    				return false; 
+    		})
+
+    		$(".container").on("click", function() {
+    			$("#context-menu-lista").removeClass("show").hide();
+    		});
+
+    		$("#context-menu-lista a").on("click", function() {
+    			$(this).parent().removeClass("show").hide();
+    		});	
+			
+
+			$(document).on('click', '.excluirLista', function(){
+				if(atributo === "tarefaDinamico ml-3"){
+					$.ajax({
+                    		method: "POST",
+                    		url:'@Url.Action("Delete", "Tarefas")',
+                    		data: {Id: id }
+					});
+				}
+				else if(atributo === "tarefa ml-3")
+				{
+					$.ajax({
+                    		method: "POST",
+                    		url:'@Url.Action("Delete", "Tarefas")',
+                    		data: {Id: data }
+					});
+				}
+				
+			});	*/ 
 
 });
 </script>

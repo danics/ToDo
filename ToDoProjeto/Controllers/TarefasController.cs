@@ -34,7 +34,8 @@ namespace ToDoProjeto.Controllers
             {
                 tarefasViewModel.Add(new TarefaViewModel{
                     Id = tarefa.Id,
-                    Descricao = tarefa.Descricao,                                    
+                    Descricao = tarefa.Descricao, 
+                    ListaDeTarefaId = tarefa.ListaDeTarefaId                                   
                 });
 
             }           
@@ -58,5 +59,14 @@ namespace ToDoProjeto.Controllers
             return Json(tarefa);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Delete(int Id)
+        {
+            var tarefa = _context.Tarefas.Find(Id);
+            _context.Tarefas.Remove(tarefa);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Edit", new {Id = tarefa.ListaDeTarefaId});
+        }
     }
 }
