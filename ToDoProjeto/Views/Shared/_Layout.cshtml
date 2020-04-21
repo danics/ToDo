@@ -15,14 +15,7 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-0">
-          <!-- @if(User.Identity.IsAuthenticated)
-            {
-                <button type="button" id="sidebarCollapse" class="btn btn-info">
-                <i class="fas fa-align-left"></i>
-                <span></span>
-                </button>
-            } -->
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-0">          
             <div class="container">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">ToDo</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
@@ -31,13 +24,7 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                     <partial name="_LoginPartial" />
-                    <ul class="navbar-nav flex-grow-1">
-                       <!-- <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li> -->
+                    <ul class="navbar-nav flex-grow-1">                       
                     </ul>
                 </div>
             </div>
@@ -75,7 +62,7 @@
                                 </a>                                
                             </li>
                             <li>
-                                <a asp-controller="Tarefas" asp-action="Edit" asp-route-id="73">
+                                <a asp-controller="Tarefas" asp-action="Edit" asp-route-id="4">
                                     <i class="far fa-calendar-alt"></i>
                                     Planejado
                                 </a>
@@ -87,7 +74,7 @@
                             @for(var i = 4 ; i < ListasDeTarefa.Count() ; i ++)
                             {   
                                 <li>
-                                   <a id="lista" asp-controller="Tarefas" asp-action="Edit" asp-route-id="@ListasDeTarefa[i].Id ">
+                                   <a id="lista" asp-controller="Tarefas" asp-action="Edit" asp-route-id="@ListasDeTarefa[i].Id " data="@ListasDeTarefa[i].Id">
                                         <i class="fas fa-list"></i>
                                         @ListasDeTarefa[i].Nome
                                     </a>
@@ -98,15 +85,17 @@
 
                         <i class="fas fa-plus" id="icone"></i><input type="text" class="novaLista" placeholder="Nova Lista" maxlength="255">                        
                     </nav>                 
-                                                         
-                    <main role="main" class="pb-3 col" id="content">
-				        @RenderBody()
-			        </main>
+
+                    <div id="centerColumn" class="container">                                    
+                        <main role="main" class="pb-3 col" id="content">
+                            @RenderBody()
+                        </main>
+                    </div>
                     
                     <div class="dropdown-menu dropdown-menu-sm" id="context-menu">
                         <a class="dropdown-item" href="#">Action 1</a>
                         <a class="dropdown-item" href="#">Action 2</a>
-                        <a class="excluir" href="#">Excluir Tarefa</a>
+                        <a class="excluirTarefa" href="#">Excluir Tarefa</a>
                      </div>
 
                      <div class="dropdown-menu dropdown-menu-sm" id="context-menu-lista">
@@ -135,6 +124,7 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
 <style>
         .wrapper {
@@ -183,8 +173,7 @@
 				padding: 20px 0;
                 padding-bottom: 0;
                 margin-left: 5px;
-                margin-bottom: 0px;
-				/*border-bottom: 1px solid #edeff0;*/
+                margin-bottom: 0px;				
 			}			
 
 			#sidebar ul li a {
@@ -261,6 +250,8 @@
 <script type="text/javascript">
   $(document).ready(function () {
 
+      let teste;
+
     $('#sidebarCollapse').on('click', function () {
         $('#sidebar').toggleClass('active');        
     });   
@@ -278,59 +269,49 @@
                 function CriaLista(listaDeTarefa){
                     let id = listaDeTarefa.id;
                     let nome = listaDeTarefa.nome;
-                    $(".listaSecundaria").append('<li><a id="lista" href="/Tarefas/Edit/'+ id +'"><i class="pr-1 fas fa-list"></i>' + nome + '</a></li>');
+                    $(".listaSecundaria").append('<li><a id="lista" data="'+ id + '" href="/Tarefas/Edit/'+ id +'"><i class="pr-1 fas fa-list"></i>' + nome + '</a></li>');
+                    document.location.href = "/Tarefas/Edit/" + id + "";
                 }  
                 $(".novaLista").val("");  
         }
-    });   
+    });      
 
 
-    /*$(document).on('contextmenu', "a[id=lista]", function(e) {
-        		var top = e.pageY - 10;
-        		var left = e.pageX - 10;
-				//atributoLista = $(this).attr("class");
-				//dataLista = $(this).attr("data");
 
-				/*if(atributo === "tarefaDinamico ml-3")
-					$(".excluir").attr("href", "/Tarefas/Delete/" + id + "");
-				else if(atributo === "tarefa ml-3")
-					$(".excluir").attr("href", "/Tarefas/Delete/" + data + "");								
+    $(document).on('contextmenu', "a[id=lista]", function(e) {								
+		teste = $(this).attr("data");								
+        var top = e.pageY - 10;
+        var left = e.pageX - 10;											
         
-    			$("#context-menu-lista").css({
-        			display: "block",
-        			top: top,
-        			left: left
-    			}).addClass("show");
-    				return false; 
-    		})
+    	$("#context-menu-lista").css({
+        	display: "block",
+        	top: top,
+        	left: left
+    	}).addClass("show");
+    		return false; 
+    })
 
-    		$(".container").on("click", function() {
-    			$("#context-menu-lista").removeClass("show").hide();
-    		});
+    $(".container").on("click", function() {
+    	$("#context-menu-lista").removeClass("show").hide();
+    });
 
-    		$("#context-menu-lista a").on("click", function() {
-    			$(this).parent().removeClass("show").hide();
-    		});	
+    $("#context-menu-lista a").on("click", function() {
+    	$(this).parent().removeClass("show").hide();
+    });	
 			
 
-			$(document).on('click', '.excluirLista', function(){
-				if(atributo === "tarefaDinamico ml-3"){
-					$.ajax({
-                    		method: "POST",
-                    		url:'@Url.Action("Delete", "Tarefas")',
-                    		data: {Id: id }
-					});
+	$(document).on('click', '.excluirLista', function(){				
+		$.ajax({
+                method: "POST",
+                url:'@Url.Action("Delete", "ListasDeTarefas")',
+                data: {Id:  teste },
+				success: function(resultado) {   
+				    if(resultado)
+						document.location.href = "/Tarefas/Index/";
 				}
-				else if(atributo === "tarefa ml-3")
-				{
-					$.ajax({
-                    		method: "POST",
-                    		url:'@Url.Action("Delete", "Tarefas")',
-                    		data: {Id: data }
-					});
-				}
+        });				
 				
-			});	*/ 
+	});	 
 
 });
 </script>

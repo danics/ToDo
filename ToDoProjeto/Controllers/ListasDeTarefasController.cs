@@ -2,31 +2,31 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using ToDoProjeto.Data;
 using ToDoProjeto.Models;
+using ToDoProjeto.Servicos;
 using ToDoProjeto.ViewModels;
 
 namespace ToDoProjeto.Controllers
 {
     public class ListasDeTarefasController : Controller
-    {
-        private readonly ApplicationDbContext _context;
+    {        
+        private readonly IListaDeTarefaServicos _listaDeTarefaServicos;
 
-        public ListasDeTarefasController(ApplicationDbContext context)
+        public ListasDeTarefasController(IListaDeTarefaServicos listaDeTarefaServicos)
         {
-            _context = context;
+            _listaDeTarefaServicos = listaDeTarefaServicos;            
         }
 
         [HttpPost]
         public async Task<IActionResult> Create(ListaDeTarefaViewModel listaDeTarefaViewModel)
         {
-            var listaDeTarefa = new ListaDeTarefa()
-            {
-                Id = listaDeTarefaViewModel.Id,
-                Nome = listaDeTarefaViewModel.Nome,                
-            };                        
-            
-            _context.ListaDeTarefas.Add(listaDeTarefa);
-            await _context.SaveChangesAsync();
+            var listaDeTarefa = await _listaDeTarefaServicos.Add(listaDeTarefaViewModel);            
             return Json(listaDeTarefa);
-        }   
+        } 
+
+        [HttpPost]
+        public Task<bool> Delete(int Id)
+        {                       
+            return _listaDeTarefaServicos.Delete(Id);                      
+        }  
     }
 }

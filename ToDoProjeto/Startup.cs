@@ -12,6 +12,8 @@ using ToDoProjeto.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using ToDoProjeto.Repositorios;
+using ToDoProjeto.Servicos;
 
 namespace ToDoProjeto
 {
@@ -29,6 +31,11 @@ namespace ToDoProjeto
         {
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddScoped<IListasDeTarefasRepositorio, ListasDeTarefasRepositorio>();
+            services.AddScoped<ITarefasRepositorio, TarefasRepositorio>();
+            services.AddScoped<ITarefasServico, TarefasServico>();
+            services.AddScoped<IListaDeTarefaServicos, ListaDeTarefaServicos>();
 
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddEntityFrameworkStores<ApplicationDbContext>();

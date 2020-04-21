@@ -47,11 +47,10 @@ div.tarefaDinamico.decoration{
 
 @section scripts{
 	<script type="text/javascript">
-		$(document).ready(function () {
-			var listaHash = [];	
+		$(document).ready(function () {			
 			let id;	
 			let atributo;
-			let data;
+			let data;			
 
 			$(".novaTarefa").keypress(function(e) {        
         		if(e.which == 13) {                
@@ -64,8 +63,7 @@ div.tarefaDinamico.decoration{
                         CriaTarefa(resposta);
                     }); 
 					function CriaTarefa(tarefa){
-						let hash = new Date().getTime().toString();
-						listaHash.push(hash);
+						let hash = new Date().getTime().toString();						
 						let descricao = tarefa.descricao;	
 						id = tarefa.id;					
 						$(".itens").append('<div class="row pb-3 pt-3 border-bottom"><svg height="24" width="24" viewBox="0 0 24 24"><circle class="circuloDinamico" cx="10" cy="10" r="8" stroke="gray" stroke-width="1" fill="white" data-hash="#"></circle></svg><div class="tarefaDinamico ml-3" id="tarefa" data-hash="#">' + descricao + '</div></div>');												
@@ -93,12 +91,7 @@ div.tarefaDinamico.decoration{
         		var top = e.pageY - 10;
         		var left = e.pageX - 10;
 				atributo = $(this).attr("class");
-				data = $(this).attr("data");
-
-				/*if(atributo === "tarefaDinamico ml-3")
-					$(".excluir").attr("href", "/Tarefas/Delete/" + id + "");
-				else if(atributo === "tarefa ml-3")
-					$(".excluir").attr("href", "/Tarefas/Delete/" + data + "");*/								
+				data = $(this).attr("data");									
         
     			$("#context-menu").css({
         			display: "block",
@@ -117,7 +110,7 @@ div.tarefaDinamico.decoration{
     		});	
 
 
-			$(document).on('click', '.excluir', function(){
+			$(document).on('click', '.excluirTarefa', function(){
 				if(atributo === "tarefaDinamico ml-3"){
 					$.ajax({
                     		method: "POST",
@@ -140,7 +133,7 @@ div.tarefaDinamico.decoration{
 					});
 				}
 				
-			});	
+			});			
 
 		});
 	</script>
