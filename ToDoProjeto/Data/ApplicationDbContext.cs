@@ -20,7 +20,12 @@ namespace ToDoProjeto.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-	        modelBuilder.Entity<ListaDeTarefa>().HasData(new ListaDeTarefa{Id = 1, Nome = "Meu Dia"});           
+	        modelBuilder.Entity<ListaDeTarefa>().HasData(
+                new ListaDeTarefa{Id = 1, Nome = "Meu Dia"}, 
+                new ListaDeTarefa{Id = 2, Nome = "Importante"}, 
+                new ListaDeTarefa{Id = 3, Nome = "Tarefas"}, 
+                new ListaDeTarefa{Id = 4, Nome = "Planejado"}
+            );           
 	        base.OnModelCreating(modelBuilder);
         }
     }    
