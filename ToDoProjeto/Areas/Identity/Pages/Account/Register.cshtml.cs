@@ -13,6 +13,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using ToDoProjeto.Models;
+using ToDoProjeto.Repositorios;
 
 namespace ToDoProjeto.Areas.Identity.Pages.Account
 {
@@ -23,17 +25,21 @@ namespace ToDoProjeto.Areas.Identity.Pages.Account
         private readonly UserManager<IdentityUser> _userManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly IListasDeTarefasRepositorio _listasDeTarefasRepositorio;
 
         public RegisterModel(
             UserManager<IdentityUser> userManager,
             SignInManager<IdentityUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            IListasDeTarefasRepositorio listasDeTarefasRepositorio
+            )
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _listasDeTarefasRepositorio = listasDeTarefasRepositorio;
         }
 
         [BindProperty]
@@ -91,6 +97,11 @@ namespace ToDoProjeto.Areas.Identity.Pages.Account
                     await _emailSender.SendEmailAsync(Input.Email, "Confirme seu email",
                         $"Por favor, confirme sua conta <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicando aqui</a>.");
                         //return LocalRedirect(returnUrl);
+
+                        await _listasDeTarefasRepositorio.Add(new ListaDeTarefa{Nome = "Meu Dia", UsuarioId = user.Id});
+                        await _listasDeTarefasRepositorio.Add(new ListaDeTarefa{Nome = "Importante", UsuarioId = user.Id});
+                        await _listasDeTarefasRepositorio.Add(new ListaDeTarefa{Nome = "Tarefas", UsuarioId = user.Id});
+                        await _listasDeTarefasRepositorio.Add(new ListaDeTarefa{Nome = "Planejado", UsuarioId = user.Id});
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {

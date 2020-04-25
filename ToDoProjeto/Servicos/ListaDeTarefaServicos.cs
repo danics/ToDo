@@ -19,7 +19,8 @@ namespace ToDoProjeto.Servicos
             var listaDeTarefa = new ListaDeTarefa()
             {
                 Id = listaDeTarefaViewModel.Id,
-                Nome = listaDeTarefaViewModel.Nome,                
+                Nome = listaDeTarefaViewModel.Nome,   
+                UsuarioId = listaDeTarefaViewModel.UsuarioId             
             };  
 
             var listaDeTarefaBd = await _listaDeTarefaRepositorio.Add(listaDeTarefa);

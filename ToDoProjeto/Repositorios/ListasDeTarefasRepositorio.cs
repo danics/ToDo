@@ -17,9 +17,9 @@ namespace ToDoProjeto.Repositorios
             _context = context;
         }
 
-        public async Task<List<ListaDeTarefa>> GetAll()
+        public async Task<List<ListaDeTarefa>> GetAll(string usuarioId)
         {
-            return await _context.ListaDeTarefas.ToListAsync();             
+            return await _context.ListaDeTarefas.Where(x => x.UsuarioId == usuarioId).ToListAsync();             
         }
 
         public ListaDeTarefa GetById(int id)

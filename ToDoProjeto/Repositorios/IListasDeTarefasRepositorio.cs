@@ -7,7 +7,7 @@ namespace ToDoProjeto.Repositorios
 {
     public interface IListasDeTarefasRepositorio
     {
-        Task<List<ListaDeTarefa>> GetAll();
+        Task<List<ListaDeTarefa>> GetAll(string usuarioId);
         ListaDeTarefa GetById(int id);
         Task<ListaDeTarefa> Add(ListaDeTarefa listaDeTarefa);
         Task<bool> Delete(int Id);

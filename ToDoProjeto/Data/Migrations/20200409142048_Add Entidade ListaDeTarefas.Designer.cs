@@ -234,13 +234,7 @@ namespace ToDoProjeto.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ListaDeTarefas");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Nome = "Meu Dia"
-                        });
+                   
                 });
 
             modelBuilder.Entity("ToDoProjeto.Models.Tarefa", b =>

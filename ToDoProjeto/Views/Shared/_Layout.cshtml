@@ -1,5 +1,6 @@
 ﻿@{
-    var ListasDeTarefa = ViewData["ListasDeTarefa"] as List<ListaDeTarefa>;
+    var ListasDeTarefa = ViewData["ListasDeTarefa"] as List<ListaDeTarefa>; 
+    var usuarioId = @Html.ViewBag.UsuarioId;
 }
 
 <!DOCTYPE html>
@@ -42,43 +43,56 @@
                             </button>   
                         </div>
 
-                        <ul class="list-unstyled components">                       
-                            <li class="active">
-                                <a asp-controller="Tarefas" asp-action="Edit" asp-route-id="1">
-                                    <i class="fas fa-sun"></i>
-                                        Meu Dia
-                                </a>                                
-                            </li>
-                            <li>
-                                <a asp-controller="Tarefas" asp-action="Edit" asp-route-id="2">
-                                    <i class="far fa-star"></i>
-                                        Importante
-                                </a>                            
-                            </li>
-                            <li>
-                                <a asp-controller="Tarefas" asp-action="Edit" asp-route-id="3">
-                                    <i class="fas fa-home"></i>
-                                        Tarefas
-                                </a>                                
-                            </li>
-                            <li>
-                                <a asp-controller="Tarefas" asp-action="Edit" asp-route-id="4">
-                                    <i class="far fa-calendar-alt"></i>
-                                    Planejado
-                                </a>
-                            </li>
-                            
-                        </ul>
+                        
+                        <ul class="list-unstyled components">   
+                            @for(var i = 0 ; i < ListasDeTarefa.Count() ; i ++)
+                            {                    
+                                <li class="active">                                    
+                                        @if(ListasDeTarefa[i].Nome == "Meu Dia")
+                                        {
+                                            <a asp-controller="Tarefas" asp-action="Edit" asp-route-id="@ListasDeTarefa[i].Id">
+                                                <i class="fas fa-sun"></i>
+                                                    Meu Dia
+                                            </a> 
+                                            
+                                        }
+                                        else if(ListasDeTarefa[i].Nome == "Importante")
+                                        {
+                                            <a asp-controller="Tarefas" asp-action="Edit" asp-route-id="@ListasDeTarefa[i].Id">
+                                                <i class="far fa-star"></i>
+                                                    Importante
+                                            </a>
+                                        }
+                                        else if(ListasDeTarefa[i].Nome == "Tarefas")
+                                        {
+                                            <a asp-controller="Tarefas" asp-action="Edit" asp-route-id="@ListasDeTarefa[i].Id">
+                                                <i class="fas fa-home"></i>
+                                                    Tarefas
+                                            </a>
+                                        }
+                                        else if(ListasDeTarefa[i].Nome == "Planejado")
+                                        {
+                                            <a asp-controller="Tarefas" asp-action="Edit" asp-route-id="@ListasDeTarefa[i].Id">
+                                                <i class="far fa-calendar-alt"></i>
+                                                    Planejado
+                                            </a> 
+                                        }                                                                                                                                                                                               
+                                </li>
+                            }   
+                        </ul>                                         
 
                         <ul class="listaSecundaria components">
-                            @for(var i = 4 ; i < ListasDeTarefa.Count() ; i ++)
+                            @for(var j = 0 ; j < ListasDeTarefa.Count() ; j ++)
                             {   
-                                <li>
-                                   <a id="lista" asp-controller="Tarefas" asp-action="Edit" asp-route-id="@ListasDeTarefa[i].Id " data="@ListasDeTarefa[i].Id">
-                                        <i class="fas fa-list"></i>
-                                        @ListasDeTarefa[i].Nome
-                                    </a>
-                                </li>  
+                                @if(ListasDeTarefa[j].Nome != "Meu Dia" && ListasDeTarefa[j].Nome !="Importante" && ListasDeTarefa[j].Nome != "Tarefas" && ListasDeTarefa[j].Nome != "Planejado")
+                                {
+                                    <li>
+                                        <a id="lista" asp-controller="Tarefas" asp-action="Edit" asp-route-id="@ListasDeTarefa[j].Id " data="@ListasDeTarefa[j].Id">
+                                                <i class="fas fa-list"></i>
+                                                @ListasDeTarefa[j].Nome
+                                        </a>
+                                    </li>  
+                                }                                                                    
                             }                                  
                         </ul>
                                              
@@ -262,7 +276,7 @@
                 $.ajax({
                     method: "POST",
                     url:'@Url.Action("Create", "ListasDeTarefas")',
-                    data: {Nome: nomeLista}
+                    data: {Nome: nomeLista, UsuarioId: "@usuarioId"}
                 }).done(function (resposta) {
                         CriaLista(resposta);
                     });

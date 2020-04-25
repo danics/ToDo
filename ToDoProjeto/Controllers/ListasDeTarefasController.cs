@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ToDoProjeto.Data;
 using ToDoProjeto.Models;
@@ -7,6 +8,7 @@ using ToDoProjeto.ViewModels;
 
 namespace ToDoProjeto.Controllers
 {
+    [Authorize]
     public class ListasDeTarefasController : Controller
     {        
         private readonly IListaDeTarefaServicos _listaDeTarefaServicos;

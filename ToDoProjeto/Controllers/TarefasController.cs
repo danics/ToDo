@@ -1,7 +1,9 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ToDoProjeto.Data;
@@ -17,15 +19,20 @@ namespace ToDoProjeto.Controllers
     {        
         private readonly IListasDeTarefasRepositorio _listasDeTarefasRepositorio;
         private readonly ITarefasServico _tarefasServico;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public TarefasController(IListasDeTarefasRepositorio listasDeTarefasRepositorio, ITarefasServico tarefasServico)
+        public TarefasController(IListasDeTarefasRepositorio listasDeTarefasRepositorio, 
+                                 ITarefasServico tarefasServico,
+                                 UserManager<IdentityUser> userManager)
         {            
             _listasDeTarefasRepositorio = listasDeTarefasRepositorio;
             _tarefasServico = tarefasServico;
+            _userManager = userManager;
         }   
         public async Task<IActionResult> Index()
         {    
-            ViewData["ListasDeTarefa"] = await _listasDeTarefasRepositorio.GetAll();        
+            ViewData["ListasDeTarefa"] = await _listasDeTarefasRepositorio.GetAll(_userManager.GetUserId(User)); 
+            ViewBag.UsuarioId = _userManager.GetUserId(User);    
             return View();
         }          
         
@@ -35,7 +42,7 @@ namespace ToDoProjeto.Controllers
             ViewData["ListaTitulo"] = _listasDeTarefasRepositorio.GetById(id);    
             var tarefasViewModel = _tarefasServico.GetByListaDeTarefaId(id); 
            
-            ViewData["ListasDeTarefa"] = await _listasDeTarefasRepositorio.GetAll();
+            ViewData["ListasDeTarefa"] = await _listasDeTarefasRepositorio.GetAll(_userManager.GetUserId(User));
             return View(tarefasViewModel);            
         } 
 

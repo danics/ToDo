@@ -229,31 +229,14 @@ namespace ToDoProjeto.Data.Migrations
                     b.Property<string>("Nome")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("UsuarioId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
 
-                    b.ToTable("ListaDeTarefas");
+                    b.HasIndex("UsuarioId");
 
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Nome = "Meu Dia"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Nome = "Importante"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Nome = "Tarefas"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Nome = "Planejado"
-                        });
+                    b.ToTable("ListaDeTarefas");
                 });
 
             modelBuilder.Entity("ToDoProjeto.Models.Tarefa", b =>
@@ -328,6 +311,13 @@ namespace ToDoProjeto.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("ToDoProjeto.Models.ListaDeTarefa", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "Usuario")
+                        .WithMany()
+                        .HasForeignKey("UsuarioId");
                 });
 
             modelBuilder.Entity("ToDoProjeto.Models.Tarefa", b =>

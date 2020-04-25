@@ -18,7 +18,7 @@ namespace ToDoProjeto.Data
         public DbSet<Tarefa> Tarefas {get;set;}
         public DbSet<ListaDeTarefa> ListaDeTarefas{get;set;}
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        /*protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 	        modelBuilder.Entity<ListaDeTarefa>().HasData(
                 new ListaDeTarefa{Id = 1, Nome = "Meu Dia"}, 
@@ -27,6 +27,6 @@ namespace ToDoProjeto.Data
                 new ListaDeTarefa{Id = 4, Nome = "Planejado"}
             );           
 	        base.OnModelCreating(modelBuilder);
-        }
+        }*/
     }    
 }

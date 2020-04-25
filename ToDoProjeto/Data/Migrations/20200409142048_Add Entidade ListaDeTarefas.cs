@@ -22,12 +22,7 @@ namespace ToDoProjeto.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ListaDeTarefas", x => x.Id);
-                });
-
-            migrationBuilder.InsertData(
-                table: "ListaDeTarefas",
-                columns: new[] { "Id", "Nome" },
-                values: new object[] { 1, "Meu Dia" });
+                });           
 
             migrationBuilder.CreateIndex(
                 name: "IX_Tarefas_ListaDeTarefaId",
