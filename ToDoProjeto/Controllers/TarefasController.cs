@@ -43,6 +43,7 @@ namespace ToDoProjeto.Controllers
             var tarefasViewModel = _tarefasServico.GetByListaDeTarefaId(id); 
            
             ViewData["ListasDeTarefa"] = await _listasDeTarefasRepositorio.GetAll(_userManager.GetUserId(User));
+            ViewBag.UsuarioId = _userManager.GetUserId(User);
             return View(tarefasViewModel);            
         } 
 
