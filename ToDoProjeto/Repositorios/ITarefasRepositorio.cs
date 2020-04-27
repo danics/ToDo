@@ -10,5 +10,6 @@ namespace ToDoProjeto.Repositorios
         Task<Tarefa> Add(Tarefa tarefa);
         Tarefa GetById(int Id);
         Tarefa Delete(int Id);
+        Task<bool> ChangeStatus(Tarefa tarefa);
     }
 }

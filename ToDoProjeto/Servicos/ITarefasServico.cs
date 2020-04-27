@@ -10,5 +10,6 @@ namespace ToDoProjeto.Servicos
         List<TarefaViewModel> GetByListaDeTarefaId(int id);
         Task<Tarefa> Add(TarefaViewModel tarefaViewModel);
         Tarefa Delete(int Id);
+        Task<bool> ChangeStatus(TarefaViewModel tarefaViewModel);
     }
 }

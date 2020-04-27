@@ -1,13 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using ToDoProjeto.Data;
-using ToDoProjeto.Models;
 using ToDoProjeto.Repositorios;
 using ToDoProjeto.Servicos;
 using ToDoProjeto.ViewModels.Tarefas;
@@ -52,6 +46,12 @@ namespace ToDoProjeto.Controllers
         {
             var tarefa = await _tarefasServico.Add(tarefaViewModel);            
             return Json(tarefa);
+        }
+
+        [HttpPost]
+        public Task<bool> Status(TarefaViewModel tarefaViewModel)
+        {
+            return _tarefasServico.ChangeStatus(tarefaViewModel);
         }
 
         [HttpPost]

@@ -1,4 +1,5 @@
 @model IEnumerable<ToDoProjeto.ViewModels.Tarefas.TarefaViewModel>
+@using static ToDoProjeto.Views.Shared.Enums.Status
 
 @{
 	ViewData["Title"] = "Tarefas";
@@ -18,13 +19,26 @@
 			<input class="novaTarefa" href="#" placeholder=" + Adicionar uma tarefa" maxlength="255"><br>	
 			<div class="itens">																							
 				@foreach (var item in Model)
-				{					
-					<div class="row pb-3 pt-3 border-bottom">
-						<svg height="24" width="24" viewBox="0 0 24 24">
-  							<circle class="circulo" cx="10" cy="10" r="8" stroke="gray" stroke-width="1" fill="white" data="@item.Id"></circle>
-						</svg>
-						<div class="tarefa ml-3" id="tarefa" data="@item.Id">@item.Descricao</div>	
-					</div>					
+				{	
+					@if (item.Status == Finalizado)
+					{
+						<div class="row pb-3 pt-3 border-bottom">
+							<svg height="24" width="24" viewBox="0 0 24 24">
+								<circle class="circulo" cx="10" cy="10" r="8" stroke="gray" stroke-width="1" fill="gray" data="@item.Id"></circle>
+							</svg>
+							<div class="tarefa ml-3" id="tarefa" data="@item.Id" descricao="@item.Descricao" status="@item.Status" style="text-decoration: line-through">@item.Descricao</div>	
+						</div>						
+					}	
+					else if (item.Status == EmAberto)
+					{
+						<div class="row pb-3 pt-3 border-bottom">
+							<svg height="24" width="24" viewBox="0 0 24 24">
+								<circle class="circulo" cx="10" cy="10" r="8" stroke="gray" stroke-width="1" fill="white" data="@item.Id"></circle>
+							</svg>
+							<div class="tarefa ml-3" id="tarefa" data="@item.Id" descricao="@item.Descricao" status="@item.Status">@item.Descricao</div>	
+						</div>						
+					}				
+										
 				}
 			</div>	
 		</div>			
@@ -50,7 +64,9 @@ div.tarefaDinamico.decoration{
 		$(document).ready(function () {			
 			let id;	
 			let atributo;
-			let data;			
+			let data;	
+			let item;
+			let idDinamico;		
 
 			$(".novaTarefa").keypress(function(e) {        
         		if(e.which == 13) {                
@@ -62,32 +78,88 @@ div.tarefaDinamico.decoration{
 					}).done(function (resposta) {
                         CriaTarefa(resposta);
                     }); 
-					function CriaTarefa(tarefa){
-						//var hash = new Date().getTime().toString();						
+					function CriaTarefa(tarefa){											
 						var descricao = tarefa.descricao;	
 						id = tarefa.id;					
-						$(".itens").append('<div class="row pb-3 pt-3 border-bottom"><svg height="24" width="24" viewBox="0 0 24 24"><circle class="circuloDinamico" cx="10" cy="10" r="8" stroke="gray" stroke-width="1" fill="white" data-hash="#"></circle></svg><div class="tarefaDinamico ml-3" id="tarefa" data-hash="#">' + descricao + '</div></div>');						
-						//$(".circuloDinamico").attr("data-hash", hash);
-						//$(".tarefaDinamico").attr("data-hash", hash);						
+						$(".itens").append('<div class="row pb-3 pt-3 border-bottom"><svg height="24" width="24" viewBox="0 0 24 24"><circle class="circuloDinamico" cx="10" cy="10" r="8" stroke="gray" stroke-width="1" fill="white" data-hash="' + id + '"></circle></svg><div class="tarefaDinamico ml-3" id="tarefa" data-hash="' + id + '" descricao="' + descricao +'" status="EmAberto">' + descricao + '</div></div>');																	
 						$(".novaTarefa").val("");
 					}					
 				}
 			});
 
 			$(document).on('click', '.circulo', function () {	
-				var item = $(this).attr("data");			
+				item = $(this).attr("data");			
 				$(".circulo[data=" + item + "]").toggleClass("preenchimento");				
-				$(".tarefa[data=" + item + "]").toggleClass("decoration");
+				$(".tarefa[data=" + item + "]").toggleClass("decoration");	
+				AlteraStatus();			
 			});
 
-			$(document).on('click', '.circuloDinamico', function () {
-				var hash = new Date().getTime().toString();
-				$(this).attr("data-hash", hash)		
-				var item = $(this).attr("data-hash");	
-				$(this).parent().parent().find(".tarefaDinamico").attr("data-hash", item)						
-				$(".circuloDinamico[data-hash=" + item + "]").toggleClass("preenchimento");				
-				$(".tarefaDinamico[data-hash=" + item + "]").toggleClass("decoration");
+			function AlteraStatus(){
+			
+					var descricao = $(".tarefa[data=" + item + "]").attr("descricao");
+					var status = $(".tarefa[data=" + item + "]").attr("status");
+
+					if(status == "EmAberto")
+					{
+						$.ajax({
+						method: "POST",
+						url:'@Url.Action("Status", "Tarefas")',
+                    	data: {Id: item, Descricao: descricao, Status: 1, ListaDeTarefaId: @ListaTitulo.Id},
+						success: function() {   
+								location.reload();  
+							} 
+						});
+					}
+					else if(status == "Finalizado")
+					{
+						$.ajax({
+						method: "POST",
+						url:'@Url.Action("Status", "Tarefas")',
+                    	data: {Id: item, Descricao: descricao, Status: 0, ListaDeTarefaId: @ListaTitulo.Id},
+						success: function() {   
+								location.reload();  
+							}
+						});
+					}										
+				
+			};
+
+			$(document).on('click', '.circuloDinamico', function () {				
+				idDinamico = $(this).attr("data-hash")												
+				$(".circuloDinamico[data-hash=" + idDinamico + "]").toggleClass("preenchimento");				
+				$(".tarefaDinamico[data-hash=" + idDinamico + "]").toggleClass("decoration");
+				AlteraStatusDinamico();
 			});	
+
+			function AlteraStatusDinamico(){
+			
+					var descricao = $(".tarefaDinamico[data-hash=" + idDinamico + "]").attr("descricao");
+					var status = $(".tarefaDinamico[data-hash=" + idDinamico + "]").attr("status");
+
+					if(status == "EmAberto")
+					{
+						$.ajax({
+						method: "POST",
+						url:'@Url.Action("Status", "Tarefas")',
+                    	data: {Id: idDinamico, Descricao: descricao, Status: 1, ListaDeTarefaId: @ListaTitulo.Id},
+						success: function() {   
+								location.reload();  
+							} 
+						});
+					}
+					else if(status == "Finalizado")
+					{
+						$.ajax({
+						method: "POST",
+						url:'@Url.Action("Status", "Tarefas")',
+                    	data: {Id: idDinamico, Descricao: descricao, Status: 0, ListaDeTarefaId: @ListaTitulo.Id},
+						success: function() {   
+								location.reload();  
+							}
+						});
+					}										
+				
+			};
 
 
 			$(document).on('contextmenu', "div[id=tarefa]", function(e) {

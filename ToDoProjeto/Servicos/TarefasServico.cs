@@ -25,6 +25,7 @@ namespace ToDoProjeto.Servicos
                 tarefasViewModel.Add(new TarefaViewModel{
                     Id = tarefa.Id,
                     Descricao = tarefa.Descricao, 
+                    Status = tarefa.Status,
                     ListaDeTarefaId = tarefa.ListaDeTarefaId                                   
                 });
             }  
@@ -44,6 +45,20 @@ namespace ToDoProjeto.Servicos
 
             var tarefaBd = await _tarefasRepositorio.Add(tarefa);   
             return tarefaBd;          
+        }
+
+        public Task<bool> ChangeStatus(TarefaViewModel tarefaViewModel)
+        {
+            var tarefa = new Tarefa()
+            {
+                Id = tarefaViewModel.Id,
+                Descricao = tarefaViewModel.Descricao,
+                Status = tarefaViewModel.Status,
+                ListaDeTarefaId = tarefaViewModel.ListaDeTarefaId
+            };
+
+            var retorno = _tarefasRepositorio.ChangeStatus(tarefa);
+            return retorno;   
         }
 
         public Tarefa Delete(int Id)

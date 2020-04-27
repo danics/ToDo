@@ -34,6 +34,17 @@ namespace ToDoProjeto.Repositorios
             return _context.Tarefas.Find(Id);
         }
 
+        public async Task<bool> ChangeStatus(Tarefa tarefa)
+        {            
+            if(tarefa != null)
+            {
+                _context.Tarefas.Update(tarefa);
+                await _context.SaveChangesAsync();
+                return true;                             
+            }
+            return false;
+        }
+
         public Tarefa Delete(int Id)
         {
             var tarefa = GetById(Id);
