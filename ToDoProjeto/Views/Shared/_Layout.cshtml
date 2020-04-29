@@ -9,8 +9,7 @@
     <script src="https://kit.fontawesome.com/6d598fd4c6.js" crossorigin="anonymous"></script>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />    
-    <title>@ViewData["Title"] - ToDo</title>
-    
+    <title>@ViewData["Title"] - ToDo</title>    
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />     
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
@@ -97,24 +96,19 @@
                         </ul>
                                              
 
-                        <i class="fas fa-plus" id="icone"></i><input type="text" class="novaLista" placeholder="Nova Lista" maxlength="255">                        
+                        <i class="fas fa-plus" id="icone"></i><input type="text" class="novaLista" placeholder="  Nova Lista" maxlength="255">                        
                     </nav>                 
 
                     <div id="centerColumn" class="container">                                    
                         <main role="main" class="pb-3 col" id="content">
                             @RenderBody()
                         </main>
-                    </div>
-                    
-                    <div class="dropdown-menu dropdown-menu-sm" id="context-menu">
-                        <a class="dropdown-item" href="#">Action 1</a>
-                        <a class="dropdown-item" href="#">Action 2</a>
+                    </div>                    
+                    <div class="dropdown-menu dropdown-menu-sm" id="context-menu">                        
                         <a class="excluirTarefa" href="#">Excluir Tarefa</a>
                      </div>
 
-                     <div class="dropdown-menu dropdown-menu-sm" id="context-menu-lista">
-                        <a class="dropdown-item" href="#">Action 1</a>
-                        <a class="dropdown-item" href="#">Action 2</a>
+                     <div class="dropdown-menu dropdown-menu-sm" id="context-menu-lista">                        
                         <a class="excluirLista" href="#">Excluir Lista</a>
                      </div>
 
@@ -205,8 +199,7 @@
                 background: #f8f9fa;
 			    color: #212529;
                 border: 0px;
-                outline: 0px;
-                margin-left: 10px;            
+                outline: 0px;                           
             }  
 
             #icone{
@@ -229,8 +222,8 @@
                 margin-bottom: 3px;                
             }
 
-            #sidebar.active input {
-                padding: 10px 10px;
+            #sidebar.active input { 
+                margin-left: 10px;               
                 font-size: 0.85em; 
                 width: 70px;                            
             }
@@ -247,7 +240,9 @@
 
             #context-menu-lista{
 	            z-index:9999;
-            }                     
+            }      
+
+                       
                                             
 		@@media all and (min-width: 760px) and (max-width: 770px) {
 			#sidebar {
@@ -259,7 +254,7 @@
 		}
 
 
-         @@media all and (min-width: 360px) and (max-width: 374px){
+         @@media all and (min-width: 359px) and (max-width: 374px){
 			#sidebar {
 				margin-left: -17px;
                 min-width: 0;
@@ -270,10 +265,20 @@
                 h1{
                     font-size: 20px;
                 }
-                #sidebar input{               
-                margin-left: -35px;     
-                text-align: center;       
+                #sidebar input{                                  
+                text-align: initial;  
+                margin-left: -1.5px;                
+                font-size: 0.80em;     
                 }  
+                #sidebar.active input{               
+                margin-left: -1px;     
+                text-align: center;    
+                font-size: 0.80em;   
+                }  
+                #icone{
+                    font-size: 12px;
+                    margin-right: 1px;
+                }
 		}   
 
         @@media all and (min-width: 375px) and (max-width: 575px) {
@@ -284,12 +289,27 @@
                 #sidebar.active {
                     margin-left: -20px;
                 }
-                #sidebar input{               
+                /*#sidebar input{               
                 margin-left: -20px;     
                 text-align: center;       
-                }  
+                }  */
                 h1{
                     font-size: 20px;
+                }
+
+                #sidebar input{                                  
+                text-align: initial;  
+                margin-left: -1.5px;                
+                font-size: 0.80em;     
+                }  
+                #sidebar.active input{               
+                margin-left: -1px;     
+                text-align: center;    
+                font-size: 0.80em;   
+                }  
+                #icone{
+                    font-size: 12px;
+                    margin-right: 1px;
                 }
 		}
 
